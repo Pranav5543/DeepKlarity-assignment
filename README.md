@@ -98,47 +98,51 @@ API Docs: http://localhost:8000/docs
 Create a .env file inside backend/:
 
 # Database Configuration
+```
 DATABASE_URL=postgresql://username:password@localhost:5432/quiz_db
-
+```
 # Gemini API
+```
 GEMINI_API_KEY=your_gemini_api_key_here
-
+```
 # App Settings
+```
 DEBUG=True
 LOG_LEVEL=INFO
 
+```
 ### 📱 Usage
 🔹 Generate a Quiz
 
-Paste any Wikipedia article URL
+🔹 Paste any Wikipedia article URL
 
-Click Generate
+🔹 Click Generate
 
-Take the AI-generated quiz with instant feedback
+🔹 Take the AI-generated quiz with instant feedback
 
-Review your score and see detailed explanations
+🔹 Review your score and see detailed explanations
 
-Try these:
+# Try these:
 
-Artificial Intelligence
+🔹 Artificial Intelligence
 
-Machine Learning
+🔹 Machine Learning
 
-Quantum Computing
+🔹 Quantum Computing
 
-Climate Change
+🔹 Climate Change
 
 ### 📊 API Endpoints
 ## Quiz Endpoints
-
+~~~
 POST /api/quiz/generate – Generate quiz from Wikipedia URL
 
 POST /api/quiz/validate-url – Validate Wikipedia URL
 
 GET /api/quiz/{id} – Get specific quiz
-
-History Endpoints
-
+~~~
+## History Endpoints
+~~~
 GET /api/history/ – List past quizzes
 
 GET /api/history/{id} – Get detailed quiz info
@@ -146,8 +150,9 @@ GET /api/history/{id} – Get detailed quiz info
 DELETE /api/history/{id} – Delete quiz
 
 GET /api/history/stats/summary – Get user statistics
-
+~~~
 ### 🧱 Project Structure
+~~~
 ai-wiki-quiz-generator/
 ├── backend/
 │   ├── main.py
@@ -165,20 +170,21 @@ ai-wiki-quiz-generator/
 │   │   └── App.js
 │   └── public/
 └── sample_data/
-
+~~~
 ### 🧪 Testing & Code Quality
 # Backend
-cd backend
+~~~cd backend
 pytest
 flake8 .
 black .
-
+~~~
 # Frontend
+~~~
 cd frontend
 npm test
 npm run lint
 npm run format
-
+~~~
 ### 🐳 Deployment
 Docker
 docker-compose up --build -d
@@ -186,22 +192,23 @@ docker-compose up --build -d
 Vercel (Frontend)
 vercel --prod
 
+~~~
 Manual Backend
 gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
-
+~~~
 ### 🔒 Security
 
-Input validation & sanitization
+🔹Input validation & sanitization
 
-CORS protection
+🔹CORS protection
 
-Rate limiting
+🔹Rate limiting
 
-Secure error handling
+🔹Secure error handling
 
-HTTPS enforcement in production
+🔹HTTPS enforcement in production
 
-Environment-based secret management
+🔹Environment-based secret management
 
 ### 📈 Performance
 Metric	Average
@@ -209,21 +216,6 @@ Quiz Generation	3–5 seconds
 API Response	< 200 ms
 DB Queries	Indexed & optimized
 Frontend Load	< 2 seconds
-
-## 🤝 Contributing
-
-Fork the repository
-
-Create a new feature branch
-
-Implement your feature or fix
-
-Add tests
-
-Submit a PR 🚀
-
-Refer to CONTRIBUTING.md
- for details.
 
 ### 📜 License
 
@@ -233,4 +225,4 @@ This project is licensed under the MIT License – see the LICENSE file.
 
 Built with ❤️ by Pranav
 
-</div> ```
+</div> 
