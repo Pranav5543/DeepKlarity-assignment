@@ -9,7 +9,7 @@
 
 **An intelligent quiz generation platform that creates contextual quizzes from Wikipedia articles using advanced AI technology.**
 
-[🚀 Live Demo](https://ai-wiki-quiz.vercel.app) • [📚 Documentation](https://ai-wiki-quiz.vercel.app/docs) • [🐛 Report Bug](https://github.com/yourusername/ai-wiki-quiz-generator/issues)
+[🚀 Live Demo]()
 
 </div>
 
