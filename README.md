@@ -187,13 +187,15 @@ npm run format
 ~~~
 ### 🐳 Deployment
 Docker
+~~~
 docker-compose up --build -d
-
+~~~
 Vercel (Frontend)
+~~~
 vercel --prod
-
 ~~~
 Manual Backend
+~~~
 gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
 ~~~
 ### 🔒 Security
@@ -219,7 +221,7 @@ Frontend Load	< 2 seconds
 
 ### 📜 License
 
-This project is licensed under the MIT License – see the LICENSE file.
+This project is licensed under the MIT License.
 
 <div align="center">
 
