@@ -33,7 +33,7 @@ const QuizDisplay = ({ quizData, onNewQuiz }) => {
   const calculateScore = () => {
     let correct = 0;
     quizData.quiz.forEach((question, index) => {
-      if (userAnswers[index] === question.answer) {
+      if (userAnswers[index] === question.correct_answer) {
         correct++;
       }
     });
@@ -93,32 +93,34 @@ const QuizDisplay = ({ quizData, onNewQuiz }) => {
       </div>
 
       {/* Key Entities */}
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Key Information</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {Object.entries(quizData.key_entities).map(([category, items]) => (
-            <div key={category} className="space-y-2">
-              <div className="flex items-center space-x-2">
-                {category === 'people' && <Users className="h-5 w-5 text-blue-600" />}
-                {category === 'organizations' && <Building className="h-5 w-5 text-green-600" />}
-                {category === 'locations' && <MapPin className="h-5 w-5 text-red-600" />}
-                {category === 'concepts' && <Lightbulb className="h-5 w-5 text-purple-600" />}
-                <h3 className="font-medium text-gray-900 capitalize">{category}</h3>
+      {quizData.key_entities && Object.keys(quizData.key_entities).length > 0 && (
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Key Information</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {Object.entries(quizData.key_entities).map(([category, items]) => (
+              <div key={category} className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  {category === 'people' && <Users className="h-5 w-5 text-blue-600" />}
+                  {category === 'organizations' && <Building className="h-5 w-5 text-green-600" />}
+                  {category === 'locations' && <MapPin className="h-5 w-5 text-red-600" />}
+                  {category === 'concepts' && <Lightbulb className="h-5 w-5 text-purple-600" />}
+                  <h3 className="font-medium text-gray-900 capitalize">{category}</h3>
+                </div>
+                <div className="space-y-1">
+                  {items.slice(0, 3).map((item, index) => (
+                    <div key={index} className="text-sm text-gray-600 bg-gray-50 px-2 py-1 rounded">
+                      {item}
+                    </div>
+                  ))}
+                  {items.length > 3 && (
+                    <div className="text-xs text-gray-500">+{items.length - 3} more</div>
+                  )}
+                </div>
               </div>
-              <div className="space-y-1">
-                {items.slice(0, 3).map((item, index) => (
-                  <div key={index} className="text-sm text-gray-600 bg-gray-50 px-2 py-1 rounded">
-                    {item}
-                  </div>
-                ))}
-                {items.length > 3 && (
-                  <div className="text-xs text-gray-500">+{items.length - 3} more</div>
-                )}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Quiz Mode Toggle */}
       <div className="bg-white rounded-2xl shadow-lg p-6">
@@ -180,16 +182,16 @@ const QuizDisplay = ({ quizData, onNewQuiz }) => {
                 <h3 className="text-lg font-medium text-gray-900 flex-1">
                   {index + 1}. {question.question}
                 </h3>
-                <div className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(question.difficulty)}`}>
-                  {getDifficultyIcon(question.difficulty)}
-                  <span className="capitalize">{question.difficulty}</span>
+                <div className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(question.difficulty || 'medium')}`}>
+                  {getDifficultyIcon(question.difficulty || 'medium')}
+                  <span className="capitalize">{question.difficulty || 'medium'}</span>
                 </div>
               </div>
 
               <div className="space-y-3">
                 {question.options.map((option, optionIndex) => {
-                  const isSelected = userAnswers[index] === option;
-                  const isCorrect = option === question.answer;
+                  const isSelected = userAnswers[index] === optionIndex;
+                  const isCorrect = optionIndex === question.correct_answer;
                   
                   let optionClass = "w-full text-left p-4 border rounded-lg transition-all duration-200 ";
                   
@@ -212,7 +214,7 @@ const QuizDisplay = ({ quizData, onNewQuiz }) => {
                   return (
                     <button
                       key={optionIndex}
-                      onClick={() => quizMode && !shouldShowCorrect && handleAnswerSelect(index, option)}
+                      onClick={() => quizMode && !shouldShowCorrect && handleAnswerSelect(index, optionIndex)}
                       disabled={!quizMode || shouldShowCorrect}
                       className={optionClass}
                     >
@@ -235,7 +237,7 @@ const QuizDisplay = ({ quizData, onNewQuiz }) => {
               {shouldShowCorrect && (
                 <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                   <h4 className="font-medium text-blue-900 mb-2">Explanation:</h4>
-                  <p className="text-blue-800">{question.explanation}</p>
+                  <p className="text-blue-800">{question.explanation || 'This is the correct answer based on the Wikipedia article content.'}</p>
                 </div>
               )}
             </div>
@@ -244,19 +246,21 @@ const QuizDisplay = ({ quizData, onNewQuiz }) => {
       </div>
 
       {/* Related Topics */}
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Related Topics</h2>
-        <div className="flex flex-wrap gap-3">
-          {quizData.related_topics.map((topic, index) => (
-            <span
-              key={index}
-              className="px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 rounded-full text-sm font-medium hover:from-blue-200 hover:to-purple-200 transition-colors cursor-pointer"
-            >
-              {topic}
-            </span>
-          ))}
+      {quizData.related_topics && quizData.related_topics.length > 0 && (
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Related Topics</h2>
+          <div className="flex flex-wrap gap-3">
+            {quizData.related_topics.map((topic, index) => (
+              <span
+                key={index}
+                className="px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 rounded-full text-sm font-medium hover:from-blue-200 hover:to-purple-200 transition-colors cursor-pointer"
+              >
+                {topic}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

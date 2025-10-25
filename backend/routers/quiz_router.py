@@ -146,7 +146,7 @@ async def validate_url(request: QuizRequest):
         
         return {
             "valid": is_valid,
-            "message": "Valid Wikipedia URL" if is_valid else "Invalid Wikipedia URL"
+            "message": "Valid Wikipedia URL" if is_valid else "Invalid Wikipedia URL. Please enter a valid Wikipedia article URL (e.g., https://en.wikipedia.org/wiki/Article_Name)"
         }
         
     except Exception as e:

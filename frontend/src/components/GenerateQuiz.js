@@ -21,14 +21,17 @@ const GenerateQuiz = () => {
     if (newUrl.trim()) {
       setValidating(true);
       try {
+        console.log('Validating URL:', newUrl);
         const response = await validateUrl(newUrl);
+        console.log('Validation response:', response);
         setUrlValid(response.valid);
         if (!response.valid) {
-          setError('Please enter a valid Wikipedia article URL');
+          setError('Please enter a valid Wikipedia article URL. Make sure it starts with https://en.wikipedia.org/wiki/');
         }
       } catch (err) {
+        console.error('Validation error:', err);
         setUrlValid(false);
-        setError('Failed to validate URL');
+        setError(`Failed to validate URL: ${err.message}`);
       } finally {
         setValidating(false);
       }

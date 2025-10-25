@@ -21,23 +21,34 @@ const apiRequest = async (endpoint, options = {}) => {
     ...options,
   };
 
+  console.log('API Request:', { url, config });
+
   try {
     const response = await fetch(url, config);
+    console.log('API Response:', { status: response.status, ok: response.ok });
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      console.error('API Error:', errorData);
       throw new ApiError(
         errorData.detail || `HTTP ${response.status}: ${response.statusText}`,
         response.status
       );
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log('API Success:', data);
+    return data;
   } catch (error) {
+    console.error('API Request Error:', error);
     if (error instanceof ApiError) {
       throw error;
     }
-    throw new ApiError('Network error: Unable to connect to the server', 0);
+    // Check if it's a network error
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      throw new ApiError('Network error: Unable to connect to the server. Please check if the backend is running.', 0);
+    }
+    throw new ApiError(`Network error: ${error.message}`, 0);
   }
 };
 

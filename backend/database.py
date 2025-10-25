@@ -11,11 +11,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Database URL - using direct connection string
-DATABASE_URL = "postgresql://neondb_owner:npg_6EzKLejbWD1m@ep-shiny-sea-ahppzxgs-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+# Database URL - using SQLite for local development
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./quiz_app.db")
 
 # Create database engine
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -21,11 +21,24 @@ class WikipediaScraper:
         """Validate if URL is a Wikipedia article"""
         try:
             parsed = urlparse(url)
-            return (
-                parsed.netloc in ['en.wikipedia.org', 'www.en.wikipedia.org'] and
-                '/wiki/' in parsed.path and
-                not any(skip in url for skip in ['Special:', 'Talk:', 'User:', 'File:', 'Category:'])
+            # Check if it's a Wikipedia domain
+            netloc = parsed.netloc.lower()
+            is_wikipedia = (
+                netloc == 'en.wikipedia.org' or 
+                netloc == 'www.en.wikipedia.org' or
+                netloc.endswith('.wikipedia.org')
             )
+            
+            # Check if it's a wiki article path
+            is_wiki_article = '/wiki/' in parsed.path
+            
+            # Check if it's not a special page
+            is_not_special = not any(skip in url for skip in [
+                'Special:', 'Talk:', 'User:', 'File:', 'Category:', 
+                'Template:', 'Help:', 'Portal:', 'Wikipedia:'
+            ])
+            
+            return is_wikipedia and is_wiki_article and is_not_special
         except:
             return False
     
