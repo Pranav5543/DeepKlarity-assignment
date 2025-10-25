@@ -85,8 +85,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "https://ai-wiki-quiz.vercel.app",  # Add your production domain
-        "https://*.vercel.app"  # Allow Vercel deployments
+        "https://deepklarity-frontend.onrender.com",  # Add your production domain
+        "https://*.onrender.com"  # Allow deployments
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
